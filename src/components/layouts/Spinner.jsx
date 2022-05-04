@@ -1,4 +1,3 @@
-import React from "react";
 import spinner from "./assets/spinner.gif";
 
 function Spinner() {
@@ -7,7 +6,7 @@ function Spinner() {
       <img
         width={180}
         className="text-center mx-auto"
-        src={Spinner}
+        src={spinner}
         alt="Loading..."
       />
     </div>
