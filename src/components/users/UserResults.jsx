@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import Spinner from "../layouts/Spinner";
 import UserItem from "./UserItem";
 import GithubContext from "../../context/github/GithubContext";
@@ -6,11 +6,7 @@ import GithubContext from "../../context/github/GithubContext";
 //empty array on line 8, since no dependencies, just want the component to load
 
 function UserResults() {
-  const { users, loading, fetchUsers } = useContext(GithubContext); //bring in all the values from Github Context Provider, refer line 25 of GithubContext.js
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  const { users, loading } = useContext(GithubContext); //bring in all the values from Github Context Provider, refer line 25 of GithubContext.js
 
   if (!loading) {
     // if loading is 'false', return the data
