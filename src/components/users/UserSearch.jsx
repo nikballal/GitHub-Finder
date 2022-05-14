@@ -59,12 +59,13 @@
 import { useState, useContext } from "react";
 import GithubContext from "../../context/github/GithubContext";
 import AlertContext from "../../context/alert/AlertContext";
+import { searchUsers } from "../../context/github/GithubActions";
 
 function UserSearch() {
   const [text, setText] = useState([]);
 
   //destructure from users (to show clear button)
-  const { users, searchUsers, clearUsers } = useContext(GithubContext);
+  const { users, dispatch, clearUsers } = useContext(GithubContext);
 
   //take the setAlert form the AlertContext
   const { setAlert } = useContext(AlertContext);
@@ -74,14 +75,15 @@ function UserSearch() {
     setText(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (text === "" || text.length === 0) {
       setAlert("Please enter something", "error");
     } else {
-      //@todo - search users
-      searchUsers(text);
+      dispatch({ type: "SET_LOADING" });
+      const users = await searchUsers(text);
+      dispatch({ type: "GET_USERS", payload: users });
       // setText("");  //clears the input text
     }
   };

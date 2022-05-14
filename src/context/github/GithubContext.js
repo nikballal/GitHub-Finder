@@ -77,32 +77,6 @@ export const GithubProvider = ({ children }) => {
   //useReducer
   const [state, dispatch] = useReducer(githubReducer, initialState);
 
-  //Get search results to display (initially we just fetched and displayed directly as part of testing)
-  const searchUsers = async (text) => {
-    setLoading(); //called from the reducer
-
-    const params = new URLSearchParams({
-      q: text,
-    });
-
-    const response = await fetch(`${GITHUB_URL}/search/users?${params}`, {
-      headers: {
-        Authorization: `${GITHUB_TOKEN}`,
-      },
-    });
-
-    const { items } = await response.json(); //destructuring 'data' to get only the 'items' in the data
-
-    //dispatch to githubreducer as a case in the switch statement
-    dispatch({
-      type: "GET_USERS",
-      payload: items,
-    });
-
-    // setUsers(data);
-    // setLoading(false);
-  };
-
   //Get single user
   const getUser = async (login) => {
     setLoading(); //called from the reducer
@@ -169,7 +143,7 @@ export const GithubProvider = ({ children }) => {
     <GithubContext.Provider
       value={{
         ...state,
-        searchUsers,
+        dispatch,
         clearUsers,
         getUser,
         getUserRepos,
@@ -183,7 +157,7 @@ export const GithubProvider = ({ children }) => {
 export default GithubContext;
 
 //REPLACED WITH ...state in githubcontext provider
-//   users: state.users,
+// users: state.users,
 // loading: state.loading,
 // user: state.user,
 // repos: state.repos
