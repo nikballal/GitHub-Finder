@@ -65,7 +65,7 @@ function UserSearch() {
   const [text, setText] = useState([]);
 
   //destructure from users (to show clear button)
-  const { users, dispatch, clearUsers } = useContext(GithubContext);
+  const { users, dispatch } = useContext(GithubContext);
 
   //take the setAlert form the AlertContext
   const { setAlert } = useContext(AlertContext);
@@ -89,7 +89,7 @@ function UserSearch() {
   };
 
   const handleClick = (e) => {
-    clearUsers();
+    dispatch({ type: "CLEAR_USERS" });
     setText("");
   };
 

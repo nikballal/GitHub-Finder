@@ -33,18 +33,14 @@ const githubReducer = (state, action) => {
         users: action.payload, //return whatever is in the state and then update the 'users' to whatever is in the payload
         loading: false,
       };
-    case "GET_USER":
+    case "GET_USER_AND_REPOS":
       return {
         ...state,
-        user: action.payload,
+        user: action.payload.user,
+        repos: action.payload.repos,
         loading: false,
       };
-    case "GET_REPOS":
-      return {
-        ...state,
-        repos: action.payload,
-        loading: false,
-      };
+
     case "CLEAR_USERS":
       return {
         ...state,
@@ -63,3 +59,18 @@ const githubReducer = (state, action) => {
 };
 
 export default githubReducer;
+
+//replace with get_user_and_repos
+
+// case "GET_USER":
+//   return {
+//     ...state,
+//     user: action.payload,
+//     loading: false,
+//   };
+// case "GET_REPOS":
+//   return {
+//     ...state,
+//     repos: action.payload,
+//     loading: false,
+//   };

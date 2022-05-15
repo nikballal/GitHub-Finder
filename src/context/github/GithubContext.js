@@ -59,8 +59,6 @@ import { createContext, useReducer } from "react";
 import githubReducer from "./GithubReducer";
 
 const GithubContext = createContext();
-const GITHUB_URL = "https://api.github.com";
-const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
 
 export const GithubProvider = ({ children }) => {
   //REPLACE WITH REDUCER
@@ -77,76 +75,12 @@ export const GithubProvider = ({ children }) => {
   //useReducer
   const [state, dispatch] = useReducer(githubReducer, initialState);
 
-  //Get single user
-  const getUser = async (login) => {
-    setLoading(); //called from the reducer
-
-    const response = await fetch(`${GITHUB_URL}/users/${login}`, {
-      headers: {
-        Authorization: `${GITHUB_TOKEN}`,
-      },
-    });
-
-    if (response.status === 404) {
-      window.location = "/notfound";
-    } else {
-      const data = await response.json(); //destructuring 'data' to get only the 'items' in the data
-
-      //dispatch to githubreducer as a case in the switch statement
-      dispatch({
-        type: "GET_USER",
-        payload: data,
-      });
-    }
-  };
-
-  //Get user repos
-  const getUserRepos = async (login) => {
-    setLoading(); //called from the reducer
-
-    //sort out the top 10 repositories
-    const params = new URLSearchParams({
-      sort: "created",
-      per_page: 10,
-    });
-
-    const response = await fetch(
-      `${GITHUB_URL}/users/${login}/repos?${params}`,
-      {
-        headers: {
-          Authorization: `${GITHUB_TOKEN}`,
-        },
-      }
-    );
-
-    const data = await response.json(); //destructuring 'data' to get only the 'items' in the data
-
-    //dispatch to githubreducer as a case in the switch statement
-    dispatch({
-      type: "GET_REPOS",
-      payload: data,
-    });
-  };
-
-  //CLEAR USERS
-  const clearUsers = () => {
-    dispatch({
-      type: "CLEAR_USERS",
-    });
-  };
-
-  //Set loading
-  const setLoading = () => dispatch({ type: "SET_LOADING" });
-
   return (
     //  fetchUsers REMOVED
     <GithubContext.Provider
       value={{
         ...state,
         dispatch,
-        clearUsers,
-        getUser,
-        getUserRepos,
       }}
     >
       {children}
